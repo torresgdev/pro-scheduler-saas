@@ -20,7 +20,7 @@ public class Service extends BaseEntity{
     private String name;
 
     @Column(name = "duration_minutes", nullable = false)
-    private Integer duratioMinutes;
+    private Integer durationMinutes;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;

@@ -23,6 +23,10 @@ public class Appointment extends BaseEntity{
     @JoinColumn(name = "service_id", nullable = false)
     private Service service;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id")
+    private Client client;
+
     @Column(name = "client_name",nullable = false, length = 100)
     private String clientName;
 
