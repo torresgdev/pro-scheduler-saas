@@ -22,20 +22,21 @@ No modelo SaaS, o "Tenant" é a empresa (ex: Barbearia do Centro). Tudo no siste
 **B.** Tabela: clients (acesso ao sistema) 
 
     id: UUID (Primary Key)
-    name: VARCHAR(30)
+    name: VARCHAR(100)
     phone: VARCHAR(30)
+    isVerified: BOOLEAN(defautl:False) - muda pra ture depois da confirmacao do bot
 
 **C.** Tabela: profissionals (prestadores do servico)
 
     id: UUID(Primary Key)
     tenant_id: UUID(foreing Key)
-    name: VARCHAR(30)
+    name: VARCHAR(100)
     bio: TEXT
 
 **D.** Tabela: services(oque é vendido)
 
     id: UUID(PRIMARY KEY)
-    name: VARCHAR(30) - EX: "Corte de Cabelo"
+    name: VARCHAR(100) - EX: "Corte de Cabelo"
     duration_minutes: INTEGER - Essencial para o calculo
     price: DECIMAL(10,2)
 
