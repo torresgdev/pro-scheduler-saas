@@ -22,7 +22,7 @@ public class TenantService {
 // CREATE NEW TENANT
     public TenantResponseDTO createTenant(TenantRequestDTO requestDTO) {
         if (repository.findBySlug(requestDTO.slug()).isPresent()) {
-            throw new ExceptionConflict("Nome ja cadastrado");
+            throw new ExceptionConflict("Slug já cadastrado");
         }
 
         Tenant tenant = new Tenant(requestDTO.name(), requestDTO.slug());
@@ -73,7 +73,7 @@ public class TenantService {
     // DELETE TENANTS
     public void deleteTenant(UUID id) {
         Tenant tenant = repository.findById(id).orElseThrow(() -> new NotFoundExceptionT("Não encontrado, Revise os dados inseridos"));
-        repository.deleteById(tenant.getId());
+        repository.delete(tenant);
     }
 
 
