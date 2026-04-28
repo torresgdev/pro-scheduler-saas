@@ -32,6 +32,12 @@ public class Tenant {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+
+    public Tenant(String name, String slug) {
+        this.name = name;
+        this.slug = slug;
+    }
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
