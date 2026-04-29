@@ -17,7 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TenantService {
 
-    public final TenantRepository repository;
+    private final TenantRepository repository;
 
 // CREATE NEW TENANT
     public TenantResponseDTO createTenant(TenantRequestDTO requestDTO) {
