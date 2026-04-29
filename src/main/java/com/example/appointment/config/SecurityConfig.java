@@ -15,11 +15,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)  // Desabilita CSRF
+                .csrf(AbstractHttpConfigurer::disable) // Desabilita CSRF (comum em APIs REST)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/tenants/**").permitAll()
-                        .requestMatchers("/v3/api-docs/**", "/swagger/ui/**").permitAll()
-                        .anyRequest().authenticated() // oque nao for acima authentica
+                        .requestMatchers("/tenants/**").permitAll() // Libera endpoints de Tenant
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() // Libera Swagger
+                        .anyRequest().authenticated() // O que não for o acima, exige login
                 )
                 .build();
     }
