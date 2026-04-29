@@ -23,7 +23,7 @@ public class ProfessionalService {
 
 
     // CREATE PROFESSIONAL
-    public ProfessionalResponseDTO createProfessional(ProfessionalRequestDTO requestDTO) {
+    public ProfessionalResponseDTO createProfessional(UUID tenantId, ProfessionalRequestDTO requestDTO) {
         var tenant = tenantRepository.findById(requestDTO.tenantId()).orElseThrow(() -> new NotFoundExceptionT("Tenant não encontrado para vincular o profissional"));
         Professional professional = new Professional(
                 requestDTO.name(),
@@ -32,9 +32,9 @@ public class ProfessionalService {
         );
 
 
-        professionalRepository.save(professional);
+        Professional saved = professionalRepository.save(professional);
 
-        return ProfessionalResponseDTO.fromModel(professional);
+        return ProfessionalResponseDTO.fromModel(saved);
     }
 
     // FIND ALL PROFESSIONAL
@@ -49,19 +49,21 @@ public class ProfessionalService {
     }
 
     //FIND BY ID PROFESSIONAL
-   public ProfessionalResponseDTO findByIdAndTenantId(UUID id, UUID tenantId) {
-        Professional professional = professionalRepository.findByIdAndTenantId(id, tenantId).orElseThrow(() -> new
+   public ProfessionalResponseDTO findByIdAndTenantId(UUID tenantId, UUID id) {
+        Professional professional = professionalRepository.findByIdAndTenantId(tenantId, id).orElseThrow(() -> new
                 NotFoundExceptionT("Profissional não encontrado para essa empresa"));
         return ProfessionalResponseDTO.fromModel(professional);
    }
     //Update PRofessional by ID
-    public ProfessionalResponseDTO updateProfessional(UUID id, ProfessionalUpdateDTO updateDTO) {
-        Professional professionalToUpdate = professionalRepository.findById(id).orElseThrow(() -> new NotFoundExceptionT("ID não encontrado" +
-                "tente novamente com ID válido."));
+    public ProfessionalResponseDTO updateProfessional(UUID id, UUID tenantId,ProfessionalUpdateDTO updateDTO) {
+        Professional professionalToUpdate = professionalRepository.findByIdAndTenantId(id, tenantId).orElseThrow(() -> new NotFoundExceptionT("ID não encontrado" +
+                " tente novamente com ID válido."));
+
 
         updateDTO.name().ifPresent(professionalToUpdate::setName);
         updateDTO.bio().ifPresent(professionalToUpdate::setBio);
-        professionalRepository.save(professionalToUpdate);
+
+        Professional saved = professionalRepository.save(professionalToUpdate);
 
         return ProfessionalResponseDTO.fromModel(professionalToUpdate);
     }
