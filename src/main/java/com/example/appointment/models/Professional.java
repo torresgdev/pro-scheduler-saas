@@ -19,4 +19,8 @@ public class Professional extends BaseEntity{
 
     private String bio;
 
+    public Professional(String name, String bio) {
+        this.name = name;
+        this.bio = bio;
+    }
 }

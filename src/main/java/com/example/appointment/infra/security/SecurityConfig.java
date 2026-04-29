@@ -1,4 +1,4 @@
-package com.example.appointment.config;
+package com.example.appointment.infra.security;
 
 
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,8 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable) // Desabilita CSRF (comum em APIs REST)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/tenants/**").permitAll() // Libera endpoints de Tenant
+                        .requestMatchers("/tenants/**").permitAll() // libera endpoint tenants
+                        .requestMatchers("/professional/**").permitAll() // libera endpoint professionals
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() // Libera Swagger
                         .anyRequest().authenticated() // O que não for o acima, exige login
                 )
