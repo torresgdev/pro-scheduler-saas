@@ -19,8 +19,9 @@ public class Professional extends BaseEntity{
 
     private String bio;
 
-    public Professional(String name, String bio) {
+    public Professional(String name, String bio, Tenant tenant) {
         this.name = name;
         this.bio = bio;
+        this.setTenant(tenant);
     }
 }

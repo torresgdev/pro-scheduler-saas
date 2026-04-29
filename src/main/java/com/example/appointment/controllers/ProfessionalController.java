@@ -31,16 +31,17 @@ public class ProfessionalController {
     }
 
     @GetMapping
-    @Operation(summary = "Lista Profissionais", description = "Lista todos os profissionais cadastrados")
-    public ResponseEntity<List<ProfessionalResponseDTO>> listAllProfessionals() {
-        var content = service.findAllProfessionals();
+    @Operation(summary = "Lista Profissionais", description = "Lista todos os profissionais cadastrados na Empresa")
+    public ResponseEntity<List<ProfessionalResponseDTO>> listAllProfessionalsByTenant(@PathVariable UUID tenantId) {
+        var content = service.findAllByTenant(tenantId);
         return ResponseEntity.ok(content);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Busca um profissional", description = "Busca profissional pelo id fornecido")
-    public ResponseEntity<ProfessionalResponseDTO> findProfessionalById(@PathVariable UUID id) {
-        var content = service.findProfessionalById(id);
+    @Operation(summary = "Busca um profissional", description = "Busca profissional pelo id fornecido por Empresa")
+    public ResponseEntity<ProfessionalResponseDTO> findProfessionalById(@PathVariable UUID id,
+                                                                        @PathVariable UUID tenantId) {
+        var content = service.findByIdAndTenantId(id, tenantId);
         return ResponseEntity.ok(content);
     }
 

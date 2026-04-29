@@ -1,7 +1,10 @@
 package com.example.appointment.dtos;
 
+import java.util.UUID;
+
 public record ProfessionalRequestDTO(
         String name,
-        String bio
+        String bio,
+        UUID tenantId
 ) {
 }
