@@ -10,7 +10,6 @@ import com.example.appointment.models.Tenant;
 import com.example.appointment.repositories.ProfessionalRepository;
 import com.example.appointment.repositories.TenantRepository;
 import com.example.appointment.services.ProfessionalService;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,9 +19,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.mockito.Mockito.*;
 
@@ -90,6 +89,79 @@ public class ProfessionalServiceTest {
         verify(professionalRepository, never()).save(any(Professional.class));
     }
 
+
+    @Test
+    @DisplayName("Deve buscar profissional todos profissionais da empresa(tenant)")
+    void shouldFindAllProfessionalsBoundedWithTenant() {
+        Professional professional1 = new Professional("Arrascaeta", "Esta machucado", tenant);
+        professional1.setId(professionalId);
+        List<Professional> list = new ArrayList<>(Arrays.asList(professional,professional1));
+
+
+
+        when(tenantRepository.existsById(tenantId)).thenReturn(true);
+        when(professionalRepository.findAllByTenantId(tenantId)).thenReturn(list);
+
+        List<ProfessionalResponseDTO> result = service.findAllByTenant(tenantId);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(2, result.size());
+        Assertions.assertEquals("Renato Abreu", result.getFirst().name());
+        Assertions.assertEquals("Arrascaeta", result.getLast().name());
+
+        verify(tenantRepository, times(1)).existsById(tenantId);
+        verify(professionalRepository, times(1)).findAllByTenantId(tenantId);
+    }
+
+    @Test
+    @DisplayName("Deve lançar uma exception se o tenant nao existir ")
+    void shouldThrowNotFoundExceptionForTenantInList() {
+
+        when(tenantRepository.existsById(tenantId)).thenReturn(false);
+
+        NotFoundExceptionT ex = Assertions.assertThrows(NotFoundExceptionT.class, () -> {
+            service.findAllByTenant(tenantId);
+        }, "DEVERIA LANÇAR UMA EXCEPTION");
+
+        String message = "Empresa (tenant) não encontrada";
+
+        Assertions.assertNotNull(ex);
+        Assertions.assertEquals(message, ex.getMessage());
+
+        verify(tenantRepository, times(1)).existsById(tenantId);
+    }
+
+    @Test
+    @DisplayName("Deve Buscar apenas 1 profissional da empresa(tenant)")
+    void shouldFindProfessionalBoundedWithTenant() {
+
+        when(professionalRepository.findByIdAndTenantId(tenantId,professionalId)).thenReturn(Optional.of(professional));
+
+        ProfessionalResponseDTO result = service.findByIdAndTenantId(tenantId,professionalId);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals("Renato Abreu", professional.getName());
+        Assertions.assertEquals("barber-cosme", tenant.getSlug());
+
+        verify(professionalRepository, times(1)).findByIdAndTenantId(tenantId,professionalId);
+    }
+
+    @Test
+    @DisplayName("Deve lançar exception se o profissional nao for encontrado na empresa")
+    void shouldThrowExceptionNotFoundForProfessionalOnTenant() {
+        when(professionalRepository.findByIdAndTenantId(tenantId,professionalId)).thenReturn(Optional.empty());
+
+        NotFoundExceptionT ex = Assertions.assertThrows(NotFoundExceptionT.class, () -> {
+            service.findByIdAndTenantId(tenantId,professionalId);
+        }, "DEVERIA LANÇAR UMA EXCEPTION");
+
+        String message = "Profissional não encontrado para essa empresa";
+
+        Assertions.assertEquals(message, ex.getMessage());
+        verify(professionalRepository, times(1)).findByIdAndTenantId(tenantId,professionalId);
+    }
+
+
     @Test
     @DisplayName("Deve Atualizar um profissional que esteja vinculado a empresa")
     void shouldUpdateProfessionalBoundedWithTenant() {
@@ -130,6 +202,18 @@ public class ProfessionalServiceTest {
         Assertions.assertEquals(message, ex.getMessage());
         verify(professionalRepository, times(1)).findByIdAndTenantId(professionalId, tenantId);
         verify(professionalRepository, never()).save(any(Professional.class));
+    }
+
+    @Test
+    @DisplayName("Deve deletar um professional com sucesso")
+    void shouldDeleteProfessional() {
+
+        when(professionalRepository.findById(professionalId)).thenReturn(Optional.of(professional));
+
+        service.deleteProfessional(professionalId);
+
+        verify(professionalRepository, times(1)).findById(professionalId);
+        verify(professionalRepository, times(1)).delete(professional);
     }
 
 }
