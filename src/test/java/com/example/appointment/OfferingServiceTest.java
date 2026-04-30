@@ -111,7 +111,6 @@ public class OfferingServiceTest {
         verify(tenantRepository, times(1)).findById(tenantId);
         verify(offeringRepository, times(1)).existsByNameAndTenantId(requestDTO.name(), tenantId);
         verify(offeringRepository, never()).save(any());
-
     }
 
 }
