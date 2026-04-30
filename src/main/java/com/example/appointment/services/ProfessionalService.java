@@ -50,13 +50,13 @@ public class ProfessionalService {
 
     //FIND BY ID PROFESSIONAL
    public ProfessionalResponseDTO findByIdAndTenantId(UUID tenantId, UUID id) {
-        Professional professional = professionalRepository.findByIdAndTenantId(tenantId, id).orElseThrow(() -> new
+        Professional professional = professionalRepository.findByTenantIdAndId(tenantId, id).orElseThrow(() -> new
                 NotFoundExceptionT("Profissional não encontrado para essa empresa"));
         return ProfessionalResponseDTO.fromModel(professional);
    }
     //Update PRofessional by ID
     public ProfessionalResponseDTO updateProfessional(UUID id, UUID tenantId,ProfessionalUpdateDTO updateDTO) {
-        Professional professionalToUpdate = professionalRepository.findByIdAndTenantId(id, tenantId).orElseThrow(() -> new NotFoundExceptionT("ID não encontrado" +
+        Professional professionalToUpdate = professionalRepository.findByTenantIdAndId(id, tenantId).orElseThrow(() -> new NotFoundExceptionT("ID não encontrado" +
                 " tente novamente com ID válido."));
 
 
@@ -69,8 +69,8 @@ public class ProfessionalService {
     }
 
     //Delete PRofessional
-    public void deleteProfessional(UUID id) {
-        Professional professional = professionalRepository.findById(id).orElseThrow(() -> new NotFoundExceptionT("ID não encontrado" +
+    public void deleteProfessional(UUID tenantId,UUID id) {
+        Professional professional = professionalRepository.findByTenantIdAndId(tenantId,id).orElseThrow(() -> new NotFoundExceptionT("ID não encontrado" +
                 "tente novamente com ID válido."));
         professionalRepository.delete(professional);
     }

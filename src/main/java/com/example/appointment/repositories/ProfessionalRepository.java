@@ -10,5 +10,5 @@ import java.util.UUID;
 public interface ProfessionalRepository extends JpaRepository<Professional, UUID> {
     List<Professional> findAllByTenantId(UUID id);
 
-    Optional<Professional> findByIdAndTenantId(UUID tenantId, UUID id);
+    Optional<Professional> findByTenantIdAndId(UUID tenantId, UUID id);
 }
