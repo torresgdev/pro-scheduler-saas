@@ -86,9 +86,9 @@ public class OfferingService {
     }
 
     public void deleteOffering(UUID tenantId, UUID offeringId) {
-        Offering offering = offeringRepository.findByTenantIdAndId(tenantId, offeringId).orElseThrow(() -> new NotFoundExceptionT("Serviço não encontrado"));
+        Offering offering = offeringRepository.findByTenantIdAndId(tenantId, offeringId)
+                .orElseThrow(() -> new NotFoundExceptionT("Serviço não encontrado ou já excluído"));
 
         offeringRepository.delete(offering);
-
     }
 }

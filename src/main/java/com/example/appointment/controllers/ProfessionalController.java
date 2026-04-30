@@ -56,8 +56,9 @@ public class ProfessionalController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete um profissional", description = "Deleta profissional pelo id fornecido")
-    public ResponseEntity<Void> deleteProfessionalById(@PathVariable UUID id) {
-        service.deleteProfessional(id);
+    public ResponseEntity<Void> deleteProfessionalById(@PathVariable UUID tenantId,
+                                                       @PathVariable UUID id) {
+        service.deleteProfessional(tenantId,id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

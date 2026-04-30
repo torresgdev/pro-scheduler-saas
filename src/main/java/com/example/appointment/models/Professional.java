@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.UUID;
 
@@ -12,6 +14,8 @@ import java.util.UUID;
 @Getter @Setter
 @NoArgsConstructor
 @Table(name = "professionals")
+@SQLDelete(sql = "UPDATE professionals SET active = false WHERE id = ?") // Substitui o DELETE físico
+@SQLRestriction("active = true")
 public class Professional extends BaseEntity{
 
     @Column(nullable = false, length = 100)

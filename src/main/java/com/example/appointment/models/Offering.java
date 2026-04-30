@@ -6,6 +6,9 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+
 
 import java.math.BigDecimal;
 
@@ -13,6 +16,8 @@ import java.math.BigDecimal;
 @Getter @Setter
 @NoArgsConstructor
 @Table(name = "services")
+@SQLDelete(sql = "UPDATE services SET active = false WHERE id = ?") // Substitui o DELETE físico
+@SQLRestriction("active = true")
 public class Offering extends BaseEntity{
     @Column(nullable = false, length = 100)
     private String name;
