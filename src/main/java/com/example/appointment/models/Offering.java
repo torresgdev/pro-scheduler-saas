@@ -3,7 +3,6 @@ package com.example.appointment.models;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,8 +13,7 @@ import java.math.BigDecimal;
 @Getter @Setter
 @NoArgsConstructor
 @Table(name = "services")
-public class Service extends BaseEntity{
-
+public class Offering extends BaseEntity{
     @Column(nullable = false, length = 100)
     private String name;
 
@@ -25,4 +23,10 @@ public class Service extends BaseEntity{
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
+    public Offering(String name, Integer durationMinutes, BigDecimal price, Tenant tenant) {
+        this.name = name;
+        this.durationMinutes = durationMinutes;
+        this.price = price;
+        this.setTenant(tenant);
+    }
 }
