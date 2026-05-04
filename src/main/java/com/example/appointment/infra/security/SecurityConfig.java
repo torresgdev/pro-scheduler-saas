@@ -18,7 +18,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // Desabilita CSRF (comum em APIs REST)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/tenants/**").permitAll() // libera endpoint tenants
-                        .requestMatchers("/professional/**").permitAll() // libera endpoint professionals
+                        .requestMatchers("/professionals/**").permitAll() // libera endpoint professionals
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll() // Libera Swagger
                         .anyRequest().authenticated() // O que não for o acima, exige login
                 )

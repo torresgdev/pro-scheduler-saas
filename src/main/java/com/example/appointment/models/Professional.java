@@ -23,6 +23,9 @@ public class Professional extends BaseEntity{
 
     private String bio;
 
+    @Column(nullable = false)
+    private boolean active = true;
+
     public Professional(String name, String bio, Tenant tenant) {
         this.name = name;
         this.bio = bio;

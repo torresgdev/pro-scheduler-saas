@@ -28,6 +28,9 @@ public class Offering extends BaseEntity{
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
+    @Column(nullable = false)
+    private boolean active = true;
+
     public Offering(String name, Integer durationMinutes, BigDecimal price, Tenant tenant) {
         this.name = name;
         this.durationMinutes = durationMinutes;
