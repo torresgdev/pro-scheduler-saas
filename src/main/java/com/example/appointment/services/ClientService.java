@@ -15,10 +15,12 @@ public class ClientService {
     private final ClientRepository clientRepository;
 
     public ClientResponseDTO createClient(ClientRequestDTO requestDTO) {
-
-        Client client = new Client(requestDTO.name(), requestDTO.phone());
-        Client saved = clientRepository.save(client);
-        return ClientResponseDTO.fromModel(saved);
+        Client client = clientRepository.findByPhone(requestDTO.phone())
+                .orElseGet(() -> {
+                    Client newClient = new Client(requestDTO.name(), requestDTO.phone());
+                    return clientRepository.save(newClient);
+                });
+        return ClientResponseDTO.fromModel(client);
     }
 
 

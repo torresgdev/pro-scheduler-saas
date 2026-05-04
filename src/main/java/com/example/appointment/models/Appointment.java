@@ -19,8 +19,8 @@ public class Appointment extends BaseEntity{
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "service_id", nullable = false)
-    private Offering service;
+    @JoinColumn(name = "offering_id", nullable = false)
+    private Offering offering;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
@@ -40,6 +40,14 @@ public class Appointment extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private AppointmentStatus status;
+    private AppointmentStatus status = AppointmentStatus.PENDING_VERIFICATION;
 
+
+    public Appointment(Client client, Professional professional, Offering offering, LocalDateTime startTime) {
+        this.client = client;
+        this.professional = professional;
+        this.offering = offering;
+        this.startTime = startTime;
+        this.endTime = startTime.plusMinutes(offering.getDurationMinutes());
+    }
 }
