@@ -18,7 +18,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -67,7 +66,7 @@ public class OfferingServiceTest {
         when(offeringRepository.existsByNameAndTenantId(offering.getName(), tenantId)).thenReturn(false);
         when(offeringRepository.save(any(Offering.class))).thenReturn(offering);
 
-        OfferingResponseDTO response = service.createService(tenantId, requestDTO);
+        OfferingResponseDTO response = service.createOffering(tenantId, requestDTO);
 
         Assertions.assertNotNull(response);
         Assertions.assertEquals("Corte Simples", response.name());
@@ -84,7 +83,7 @@ public class OfferingServiceTest {
         when(tenantRepository.findById(tenantId)).thenReturn(Optional.empty());
 
         NotFoundExceptionT ex = Assertions.assertThrows(NotFoundExceptionT.class, () -> {
-            service.createService(tenantId,requestDTO);
+            service.createOffering(tenantId,requestDTO);
         }, "DEVERIA LANÇAR UMA EXCEPTION");
 
         String message = "Tenant não existe, tente novamente.";
@@ -102,7 +101,7 @@ public class OfferingServiceTest {
         when(offeringRepository.existsByNameAndTenantId(requestDTO.name(), tenantId)).thenReturn(true);
 
         ExceptionConflict ex = Assertions.assertThrows(ExceptionConflict.class, () -> {
-            service.createService(tenantId, requestDTO);
+            service.createOffering(tenantId, requestDTO);
         }, "DEVERIA LANÇAR UMA EXCEPTIONS");
 
         String message = "Nome de serviço já cadastrado!";

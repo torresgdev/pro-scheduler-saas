@@ -20,4 +20,8 @@ public class Client extends BaseEntity{
     @Column(name = "is_verified")
     private Boolean isVerified;
 
+    public Client(String name, String phone) {
+        this.name = name;
+        this.phone = phone;
+    }
 }

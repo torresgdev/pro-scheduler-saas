@@ -22,7 +22,7 @@ public class OfferingService {
     private final TenantRepository tenantRepository;
 
 
-    public OfferingResponseDTO createService(UUID tenantId, OfferingRequestDTO requestDTO) {
+    public OfferingResponseDTO createOffering(UUID tenantId, OfferingRequestDTO requestDTO) {
 
         var tenant = tenantRepository.findById(tenantId).orElseThrow(() -> new NotFoundExceptionT("Tenant não existe," +
                 " tente novamente."));
