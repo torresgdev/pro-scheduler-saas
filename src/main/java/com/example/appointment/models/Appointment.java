@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Getter @Setter
+@Table(name = "appointments")
 public class Appointment extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)

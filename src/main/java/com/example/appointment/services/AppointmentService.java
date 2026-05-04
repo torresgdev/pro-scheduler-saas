@@ -33,6 +33,7 @@ public class AppointmentService {
 
         // identificar ou criar cliente
         Client client = clientService.getOrCreateClientEntity(
+                tenantId,
                 new ClientRequestDTO(requestDTO.clientName(), requestDTO.clientPhone())
         );
 
@@ -58,6 +59,9 @@ public class AppointmentService {
         //salvar
         Appointment appointment = new Appointment(client, prof, offering, start);
         appointment.setTenant(prof.getTenant());
+        appointment.setEndTime(end);
+
+        appointment = appointmentRepository.save(appointment);
         return AppointmentResponseDTO.fromModel(appointment);
     }
 }
