@@ -36,6 +36,18 @@ public class GlobalHandleException {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<StandardError> handleGenericsErrors(Exception e, HttpServletRequest request) {
+        StandardError error = new  StandardError(
+                Instant.now(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Error interno do servidor",
+                e.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+
 
 
 }

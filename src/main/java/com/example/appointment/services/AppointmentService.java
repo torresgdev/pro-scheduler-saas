@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Service
@@ -49,6 +50,9 @@ public class AppointmentService {
         LocalDateTime start = requestDTO.starTime();
         LocalDateTime end = start.plusMinutes(offering.getDurationMinutes());
 
+        // valida se o horario esta dentro da jornada de trabalho
+        validateWorkHours(prof, start, end);
+
         // validar conflito
         boolean hasConflict = appointmentRepository.hasConflictAppointment(prof.getId(), start, end);
 
@@ -63,5 +67,18 @@ public class AppointmentService {
 
         appointment = appointmentRepository.save(appointment);
         return AppointmentResponseDTO.fromModel(appointment);
+    }
+
+
+    private void validateWorkHours(Professional prof, LocalDateTime start, LocalDateTime end) {
+        LocalTime appointmentStart = start.toLocalTime();
+        LocalTime appointmentEnd = end.toLocalTime();
+
+        // inicio não pode ser antes do horario de abertura, o fim nao pode ser depois do horario de fechamento
+        if (appointmentStart.isBefore(prof.getWorkStartTime()) ||
+        appointmentEnd.isAfter(prof.getWorkEndTime())) {
+
+            throw new ExceptionConflict("O profissional não trabalha neste horário");
+        }
     }
 }

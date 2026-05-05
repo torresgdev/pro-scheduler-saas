@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -25,6 +26,12 @@ public class Professional extends BaseEntity{
 
     @Column(nullable = false)
     private boolean active = true;
+
+    @Column(name = "work_start_time")
+    private LocalTime workStartTime;
+
+    @Column(name = "work_end_time")
+    private LocalTime workEndTime;
 
     public Professional(String name, String bio, Tenant tenant) {
         this.name = name;
