@@ -4,10 +4,12 @@ package com.example.appointment.exceptions;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.Instant;
+import java.util.List;
 
 @RestControllerAdvice
 public class GlobalHandleException {
@@ -46,6 +48,28 @@ public class GlobalHandleException {
                 request.getRequestURI()
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ValidationError> handleValidation(MethodArgumentNotValidException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.UNPROCESSABLE_CONTENT;
+
+        List<FieldMessage> fieldErrors = e.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(f -> new FieldMessage(f.getField(), f.getDefaultMessage()))
+                .toList();
+
+        ValidationError error = new ValidationError(
+                Instant.now(),
+                status.value(),
+                "Error de validação",
+                "Verifique os campos abaixo",
+                request.getRequestURI(),
+                fieldErrors
+        );
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(error);
     }
 
 

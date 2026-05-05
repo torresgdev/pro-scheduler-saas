@@ -6,6 +6,7 @@ import com.example.appointment.dtos.AppointmentResponseDTO;
 import com.example.appointment.services.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class AppointmentController {
 
     @PostMapping
     @Operation(summary = "Cria um Compromisso de Serviço", description = "Cria um compromisso de prestação de serviço")
-    public ResponseEntity<AppointmentResponseDTO> createAppointment(@PathVariable UUID tenantId,
+    public ResponseEntity<AppointmentResponseDTO> createAppointment(@Valid @PathVariable UUID tenantId,
                                                                     @RequestBody AppointmentRequestDTO requestDTO){
         var content = appointmentService.createAppointment(tenantId,requestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(content);
