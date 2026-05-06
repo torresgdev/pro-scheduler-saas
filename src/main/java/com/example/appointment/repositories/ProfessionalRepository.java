@@ -12,5 +12,5 @@ public interface ProfessionalRepository extends JpaRepository<Professional, UUID
 
     Optional<Professional> findByTenantIdAndId(UUID tenantId, UUID id);
 
-    boolean existsByTenantIdAndProfessionalId(UUID tenantId, UUID professionalId);
+    boolean existsByTenantIdAndId(UUID tenantId, UUID id);
 }

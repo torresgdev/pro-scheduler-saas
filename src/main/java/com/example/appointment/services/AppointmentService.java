@@ -76,11 +76,11 @@ public class AppointmentService {
     }
 
     public List<AppointmentResponseDTO> listAllAppointments(UUID tenantId, UUID professionalId) {
-        if (!professionalRepository.existsByTenantIdAndProfessionalId(tenantId, professionalId)) {
+        if (!professionalRepository.existsByTenantIdAndId(tenantId, professionalId)) {
             throw new NotFoundExceptionT("Profissional não encontrado no estabelecimento");
         }
 
-        List<Appointment> list =  appointmentRepository.findAllByTenantIdAndProfessionalId(tenantId, professionalId);
+        List<Appointment> list =  appointmentRepository.findAllByTenantIdAndId(tenantId, professionalId);
         return list.stream().map(AppointmentResponseDTO::fromModel).toList();
     }
 

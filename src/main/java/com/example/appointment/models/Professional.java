@@ -31,9 +31,11 @@ public class Professional extends BaseEntity{
     @Column(name = "work_end_time")
     private LocalTime workEndTime;
 
-    public Professional(String name, String bio, Tenant tenant) {
+    public Professional(String name, String bio, LocalTime workStartTime, LocalTime workEndTime,Tenant tenant) {
         this.name = name;
         this.bio = bio;
+        this.workStartTime = workStartTime;
+        this.workEndTime = workEndTime;
         this.setTenant(tenant);
     }
 }

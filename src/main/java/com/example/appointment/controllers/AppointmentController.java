@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -29,6 +30,16 @@ public class AppointmentController {
         var content = appointmentService.createAppointment(tenantId,requestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(content);
     }
+
+    @GetMapping("/{professionalId}")
+    @Operation(summary = "Lista horarios agendados", description = "lista todos os horarios agendados do profissional da empresa")
+    public ResponseEntity<List<AppointmentResponseDTO>> listAllAppointments(@Valid @PathVariable UUID tenantId,
+                                                                         @PathVariable UUID professionalId){
+        var content = appointmentService.listAllAppointments(tenantId,professionalId);
+        return ResponseEntity.ok(content);
+    }
+
+
 
 
 }

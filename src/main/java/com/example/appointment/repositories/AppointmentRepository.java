@@ -23,13 +23,13 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
             @Param("end") LocalDateTime end
             );
 
-    List<Appointment> findAllByProfessionalIDAndStartTimeBetween(
+    List<Appointment> findAllByProfessionalIdAndStartTimeBetween(
             UUID professionalId,
             LocalDateTime start,
             LocalDateTime end
     );
 
-    List<Appointment> findAllByTenantIdAndProfessionalId(UUID tenantId, UUID professionalId);
+    List<Appointment> findAllByTenantIdAndId(UUID tenantId, UUID id);
 
 
 }

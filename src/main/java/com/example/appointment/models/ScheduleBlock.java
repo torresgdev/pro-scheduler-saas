@@ -18,11 +18,16 @@ public class ScheduleBlock {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private String reason; // Ex: "Almoço", "Folga", "Médico"
 
-    @ManyToOne
+    @Column(name = "end_time", nullable = false)
+    private LocalDateTime endTime;
+
+    private String reason;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "professional_id", nullable = false)
     private Professional professional;
 
     public ScheduleBlock(Professional professional, LocalDateTime startTime, LocalDateTime endTime, String reason) {

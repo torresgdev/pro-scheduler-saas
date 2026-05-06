@@ -28,6 +28,8 @@ public class ProfessionalService {
         Professional professional = new Professional(
                 requestDTO.name(),
                 requestDTO.bio(),
+                requestDTO.workStartTime(),
+                requestDTO.workEndTime(),
                 tenant
         );
 

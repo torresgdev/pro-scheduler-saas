@@ -37,7 +37,7 @@ public class AvailabilityService {
         LocalDateTime startOfDay = date.atStartOfDay();
         LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
 
-        List<Appointment> appointments = appointmentRepository.findAllByProfessionalIDAndStartTimeBetween(professionalId
+        List<Appointment> appointments = appointmentRepository.findAllByProfessionalIdAndStartTimeBetween(professionalId
         ,startOfDay,endOfDay);
         List<ScheduleBlock> blocks = scheduleBlockRepository.findAllByProfessionalIDAndStartTimeBetween(professionalId,
                 startOfDay, endOfDay);
