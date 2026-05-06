@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -72,6 +73,15 @@ public class AppointmentService {
 
         appointment = appointmentRepository.save(appointment);
         return AppointmentResponseDTO.fromModel(appointment);
+    }
+
+    public List<AppointmentResponseDTO> listAllAppointments(UUID tenantId, UUID professionalId) {
+        if (!professionalRepository.existsByTenantIdAndProfessionalId(tenantId, professionalId)) {
+            throw new NotFoundExceptionT("Profissional não encontrado no estabelecimento");
+        }
+
+        List<Appointment> list =  appointmentRepository.findAllByTenantIdAndProfessionalId(tenantId, professionalId);
+        return list.stream().map(AppointmentResponseDTO::fromModel).toList();
     }
 
 

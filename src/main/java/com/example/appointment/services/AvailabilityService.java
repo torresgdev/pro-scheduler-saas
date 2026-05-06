@@ -20,14 +20,14 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class AvailabilitySlotService {
+public class AvailabilityService {
     private ProfessionalRepository professionalRepository;
     private AppointmentRepository appointmentRepository;
     private ScheduleBlockRepository scheduleBlockRepository;
 
 
 
-    public List<AvailabilitySlotDTO> getAvailability(UUID professionalId, LocalDate date){
+    public List<AvailabilitySlotDTO> getAvailability(UUID tenantId,UUID professionalId, LocalDate date){
 
         // busca profissional para saber o horario de trabalho
         Professional profe = professionalRepository.findById(professionalId).orElseThrow(() -> new

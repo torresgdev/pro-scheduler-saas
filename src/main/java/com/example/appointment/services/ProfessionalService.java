@@ -65,7 +65,7 @@ public class ProfessionalService {
 
         Professional saved = professionalRepository.save(professionalToUpdate);
 
-        return ProfessionalResponseDTO.fromModel(professionalToUpdate);
+        return ProfessionalResponseDTO.fromModel(saved);
     }
 
     //Delete PRofessional

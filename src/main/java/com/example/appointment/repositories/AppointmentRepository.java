@@ -29,5 +29,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
             LocalDateTime end
     );
 
+    List<Appointment> findAllByTenantIdAndProfessionalId(UUID tenantId, UUID professionalId);
+
 
 }
