@@ -47,10 +47,10 @@ public class ProfessionalController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Atualiza profissional", description = "Atualiza um profissional com id fornecido e credenciais válidas")
-    public ResponseEntity<ProfessionalResponseDTO> updateProfessionalByID(@PathVariable UUID id,
-                                                                          @PathVariable UUID tenantId,
+    public ResponseEntity<ProfessionalResponseDTO> updateProfessionalByID(@PathVariable UUID tenantId,
+                                                                          @PathVariable UUID id,
                                                                           @RequestBody ProfessionalUpdateDTO updateDTO) {
-        var content = service.updateProfessional(id, tenantId, updateDTO);
+        var content = service.updateProfessional(tenantId, id, updateDTO);
         return ResponseEntity.ok(content);
     }
 

@@ -9,6 +9,7 @@ import com.example.appointment.models.Professional;
 import com.example.appointment.repositories.ProfessionalRepository;
 import com.example.appointment.repositories.TenantRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,13 +58,15 @@ public class ProfessionalService {
         return ProfessionalResponseDTO.fromModel(professional);
    }
     //Update PRofessional by ID
-    public ProfessionalResponseDTO updateProfessional(UUID id, UUID tenantId,ProfessionalUpdateDTO updateDTO) {
-        Professional professionalToUpdate = professionalRepository.findByTenantIdAndId(id, tenantId).orElseThrow(() -> new NotFoundExceptionT("ID não encontrado" +
+    public ProfessionalResponseDTO updateProfessional(UUID tenantId, UUID id,ProfessionalUpdateDTO updateDTO) {
+        Professional professionalToUpdate = professionalRepository.findByTenantIdAndId(tenantId, id).orElseThrow(() -> new NotFoundExceptionT("ID não encontrado" +
                 " tente novamente com ID válido."));
 
 
         updateDTO.name().ifPresent(professionalToUpdate::setName);
         updateDTO.bio().ifPresent(professionalToUpdate::setBio);
+        updateDTO.start().ifPresent(professionalToUpdate::setWorkStartTime);
+        updateDTO.end().ifPresent(professionalToUpdate::setWorkEndTime);
 
         Professional saved = professionalRepository.save(professionalToUpdate);
 

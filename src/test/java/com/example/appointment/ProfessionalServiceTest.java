@@ -18,8 +18,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 import static org.mockito.Mockito.*;
@@ -48,9 +50,9 @@ public class ProfessionalServiceTest {
         tenantId = UUID.randomUUID();
         professionalId = UUID.randomUUID();
         tenant = new Tenant(tenantId, "Barbearia do Cosme", "barber-cosme", LocalDateTime.now());
-        professional = new Professional("Renato Abreu", "Profissional qualificado há 15 anos no mercado", tenant);
+        professional = new Professional("Renato Abreu", "Profissional qualificado há 15 anos no mercado", LocalTime.of(8,0), LocalTime.of(18,0) ,tenant);
         professional.setId(professionalId);
-        requestDto = new ProfessionalRequestDTO("Renato Abreu", "Profissional qualificado há 15 anos no mercado", tenantId);
+        requestDto = new ProfessionalRequestDTO("Renato Abreu", "Profissional qualificado há 15 anos no mercado", LocalTime.of(8,0), LocalTime.of(18,0),tenantId);
         responseDTO = new ProfessionalResponseDTO(professionalId,"Renato Abreu", "Profissional qualificado há 15 anos no mercado");
     }
 
@@ -92,7 +94,7 @@ public class ProfessionalServiceTest {
     @Test
     @DisplayName("Deve buscar profissional todos profissionais da empresa(tenant)")
     void shouldFindAllProfessionalsBoundedWithTenant() {
-        Professional professional1 = new Professional("Arrascaeta", "Esta machucado", tenant);
+        Professional professional1 = new Professional("Arrascaeta", "Esta machucado", LocalTime.of(8,0), LocalTime.of(18,0), tenant);
         professional1.setId(professionalId);
         List<Professional> list = new ArrayList<>(Arrays.asList(professional,professional1));
 
@@ -166,7 +168,10 @@ public class ProfessionalServiceTest {
     void shouldUpdateProfessionalBoundedWithTenant() {
         ProfessionalUpdateDTO updateDTO = new ProfessionalUpdateDTO(
                 Optional.of("Sandrin"),
-                Optional.of("")
+                Optional.of(""),
+                Optional.of(LocalTime.of(8,0)),
+                Optional.of(LocalTime.of(10,0))
+
         );
 
         when(professionalRepository.findByTenantIdAndId(professionalId, tenantId)).thenReturn(Optional.of(professional));
@@ -185,7 +190,9 @@ public class ProfessionalServiceTest {
     void shouldThrowNotFoundExceptionForProfessional() {
         ProfessionalUpdateDTO updateDTO = new ProfessionalUpdateDTO(
                 Optional.of("Sandrin"),
-                Optional.of("")
+                Optional.of(""),
+                Optional.of(LocalTime.of(8,0)),
+                Optional.of(LocalTime.of(10,0))
         );
         when(professionalRepository.findByTenantIdAndId(professionalId, tenantId)).thenReturn(Optional.empty());
 
