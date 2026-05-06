@@ -20,7 +20,7 @@ public class Appointment extends BaseEntity{
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "offering_id", nullable = false)
+    @JoinColumn(name = "service_id", nullable = false)
     private Offering offering;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -50,5 +50,10 @@ public class Appointment extends BaseEntity{
         this.offering = offering;
         this.startTime = startTime;
         this.endTime = startTime.plusMinutes(offering.getDurationMinutes());
+
+        this.clientName = client.getName();
+        this.clientPhone = client.getPhone();
+
+        this.setTenant(professional.getTenant());
     }
 }

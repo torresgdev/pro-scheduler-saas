@@ -13,7 +13,7 @@ public record AppointmentRequestDTO(
         UUID offeringId,
         @NotNull(message = "Hora de inicio do serviço não pode estar em branco")
         @Future(message = "O agendamento deve ser para uma data futura")
-        LocalDateTime starTime,
+        LocalDateTime startTime,
         @NotBlank(message = "Nome do cliente não pode estar em branco")
         @Schema(example = "Antonio Carlos")
         String clientName,

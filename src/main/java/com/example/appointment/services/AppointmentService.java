@@ -14,6 +14,7 @@ import com.example.appointment.repositories.OfferingRepository;
 import com.example.appointment.repositories.ProfessionalRepository;
 import com.example.appointment.repositories.ScheduleBlockRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,9 +50,13 @@ public class AppointmentService {
                 () -> new NotFoundExceptionT("Serviço não encontrado")
         );
 
+
         // calcular horarios
-        LocalDateTime start = requestDTO.starTime();
-        LocalDateTime end = start.plusMinutes(offering.getDurationMinutes());
+        LocalDateTime start = requestDTO.startTime();
+
+        Appointment appointment = new Appointment(client, prof, offering, start);
+
+        LocalDateTime end = appointment.getEndTime();
 
         // valida se o horario esta dentro da jornada de trabalho
         validateWorkHours(prof, start, end);
@@ -67,7 +72,6 @@ public class AppointmentService {
         }
 
         //salvar
-        Appointment appointment = new Appointment(client, prof, offering, start);
         appointment.setTenant(prof.getTenant());
         appointment.setEndTime(end);
 
@@ -80,7 +84,7 @@ public class AppointmentService {
             throw new NotFoundExceptionT("Profissional não encontrado no estabelecimento");
         }
 
-        List<Appointment> list =  appointmentRepository.findAllByTenantIdAndId(tenantId, professionalId);
+        List<Appointment> list =  appointmentRepository.findAllByTenantIdAndProfessionalId(tenantId, professionalId);
         return list.stream().map(AppointmentResponseDTO::fromModel).toList();
     }
 
