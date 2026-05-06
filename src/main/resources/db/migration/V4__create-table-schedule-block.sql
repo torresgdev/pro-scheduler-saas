@@ -7,7 +7,7 @@ CREATE TABLE schedule_block (
 
     CONSTRAINT pk_schedule_block PRIMARY KEY (id),
     CONSTRAINT fk_schedule_block_on_professional FOREIGN KEY (professional_id)
-        REFERENCES professional (id) ON DELETE CASCADE
+        REFERENCES professionals (id) ON DELETE CASCADE
 );
 
 CREATE INDEX idx_schedule_block_prof_time ON schedule_block (professional_id, start_time, end_time);

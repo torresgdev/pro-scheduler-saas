@@ -42,7 +42,7 @@ public class ProfessionalController {
     public ResponseEntity<ProfessionalResponseDTO> getById(
             @PathVariable UUID tenantId,
             @PathVariable UUID id) {
-        return ResponseEntity.ok(service.findByIdAndTenantId(id, tenantId));
+        return ResponseEntity.ok(service.findByIdAndTenantId(tenantId, id));
     }
 
     @PutMapping("/{id}")

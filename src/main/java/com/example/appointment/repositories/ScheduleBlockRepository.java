@@ -16,7 +16,7 @@ public interface ScheduleBlockRepository extends JpaRepository<ScheduleBlock, UU
             SELECT COUNT(s) > 0 FROM ScheduleBlock s
             WHERE s.professional.id = :professionalId
             AND :start < s.endTime
-            AND :end > s.starTime
+            AND :end > s.startTime
             """)
     boolean existsConflict(
             @Param("professionalId") UUID professionalId,
@@ -24,9 +24,9 @@ public interface ScheduleBlockRepository extends JpaRepository<ScheduleBlock, UU
             @Param("end") LocalDateTime end
             );
 
-    List<ScheduleBlock> findAllByProfessionalId(UUID professionalId);
-    List<ScheduleBlock> findAllByProfessionalIDAndStartTimeBetween(
-            UUID professionalId,
+    List<ScheduleBlock> findAllByProfessionalId(UUID id);
+    List<ScheduleBlock> findAllByProfessionalIdAndStartTimeBetween(
+            UUID id,
             LocalDateTime start,
             LocalDateTime end
     );

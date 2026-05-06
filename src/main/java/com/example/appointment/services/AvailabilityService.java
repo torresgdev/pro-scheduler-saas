@@ -39,7 +39,7 @@ public class AvailabilityService {
 
         List<Appointment> appointments = appointmentRepository.findAllByProfessionalIdAndStartTimeBetween(professionalId
         ,startOfDay,endOfDay);
-        List<ScheduleBlock> blocks = scheduleBlockRepository.findAllByProfessionalIDAndStartTimeBetween(professionalId,
+        List<ScheduleBlock> blocks = scheduleBlockRepository.findAllByProfessionalIdAndStartTimeBetween(professionalId,
                 startOfDay, endOfDay);
 
 

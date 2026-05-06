@@ -24,7 +24,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
             );
 
     List<Appointment> findAllByProfessionalIdAndStartTimeBetween(
-            UUID professionalId,
+            UUID id,
             LocalDateTime start,
             LocalDateTime end
     );
