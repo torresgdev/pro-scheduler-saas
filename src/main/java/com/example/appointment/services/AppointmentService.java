@@ -12,6 +12,7 @@ import com.example.appointment.models.Professional;
 import com.example.appointment.repositories.AppointmentRepository;
 import com.example.appointment.repositories.OfferingRepository;
 import com.example.appointment.repositories.ProfessionalRepository;
+import com.example.appointment.repositories.ScheduleBlockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final ProfessionalRepository professionalRepository;
     private final OfferingRepository offeringRepository;
+    private final ScheduleBlockRepository scheduleBlockRepository;
     private final ClientService clientService;
 
     @Transactional
@@ -52,6 +54,9 @@ public class AppointmentService {
 
         // valida se o horario esta dentro da jornada de trabalho
         validateWorkHours(prof, start, end);
+
+        // valida se o profissional está realmente disponivel no momento
+        scheduleBlock(prof, start, end);
 
         // validar conflito
         boolean hasConflict = appointmentRepository.hasConflictAppointment(prof.getId(), start, end);
@@ -79,6 +84,13 @@ public class AppointmentService {
         appointmentEnd.isAfter(prof.getWorkEndTime())) {
 
             throw new ExceptionConflict("O profissional não trabalha neste horário");
+        }
+    }
+
+    private void scheduleBlock(Professional prof, LocalDateTime blockStartTime, LocalDateTime blockEndTime) {
+        boolean hasBlock = scheduleBlockRepository.existsConflict(prof.getId(), blockStartTime, blockEndTime);
+        if (hasBlock) {
+            throw new ExceptionConflict("O profissional está em horario de pausa nesse momento");
         }
     }
 }

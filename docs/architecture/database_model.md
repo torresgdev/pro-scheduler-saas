@@ -25,20 +25,25 @@ No modelo SaaS, o "Tenant" é a empresa (ex: Barbearia do Centro). Tudo no siste
     name: VARCHAR(100)
     phone: VARCHAR(30)
     isVerified: BOOLEAN(defautl:False) - muda pra ture depois da confirmacao do bot
+    active: BOOLEAN
 
 **C.** Tabela: profissionals (prestadores do servico)
 
     id: UUID(Primary Key)
     tenant_id: UUID(foreing Key)
     name: VARCHAR(100)
+    work_start_time: TIME
+    work_end_time: TIME
+    active: BOOLEAN
     bio: TEXT
 
-**D.** Tabela: services(oque é vendido)
+**D.** Tabela: services(offerings)
 
     id: UUID(PRIMARY KEY)
     name: VARCHAR(100) - EX: "Corte de Cabelo"
     duration_minutes: INTEGER - Essencial para o calculo
     price: DECIMAL(10,2)
+    active: BOOLEAN
 
 **E**. Tabela: appointments (O coração do sistema)
 
@@ -49,9 +54,10 @@ No modelo SaaS, o "Tenant" é a empresa (ex: Barbearia do Centro). Tudo no siste
     client_name: VARCHAR(100)
     client_phone: VARCHAR(30)
     start_time: TIMESTAMP - data e hora de inicio
-    end_time : TIMESTAMP - calculado via codigod:
+    end_time : TIMESTAMP - calculado via codigo:
     start_time+service.duration
     status: VARCHAR(20) - ex 'SCHEDULED', 'CANCELED', 'COMPLETED'
+    active: BOOLEAN
     
     
     
