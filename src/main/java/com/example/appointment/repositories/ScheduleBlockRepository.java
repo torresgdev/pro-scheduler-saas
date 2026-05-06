@@ -1,5 +1,6 @@
 package com.example.appointment.repositories;
 
+import com.example.appointment.models.Appointment;
 import com.example.appointment.models.ScheduleBlock;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +25,9 @@ public interface ScheduleBlockRepository extends JpaRepository<ScheduleBlock, UU
             );
 
     List<ScheduleBlock> findAllByProfessionalId(UUID professionalId);
+    List<ScheduleBlock> findAllByProfessionalIDAndStartTimeBetween(
+            UUID professionalId,
+            LocalDateTime start,
+            LocalDateTime end
+    );
 }

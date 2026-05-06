@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, UUID> {
@@ -21,6 +22,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
             @Param("start")LocalDateTime start,
             @Param("end") LocalDateTime end
             );
+
+    List<Appointment> findAllByProfessionalIDAndStartTimeBetween(
+            UUID professionalId,
+            LocalDateTime start,
+            LocalDateTime end
+    );
 
 
 }
