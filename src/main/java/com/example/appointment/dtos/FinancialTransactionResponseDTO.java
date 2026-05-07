@@ -27,7 +27,7 @@ public record FinancialTransactionResponseDTO(
                 financialTransaction.getType(),
                 financialTransaction.getPaymentMethod(),
                 financialTransaction.getDescription(),
-                financialTransaction.getAppointment().getId(),
+                financialTransaction.getAppointment() != null ? financialTransaction.getAppointment().getId() : null,
                 financialTransaction.getTenant().getId()
         );
     }

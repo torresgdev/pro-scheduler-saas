@@ -12,9 +12,9 @@ import java.util.UUID;
 public interface FinancialTransactionRepository extends JpaRepository<FinancialTransaction, UUID> {
 
 @Query("""
-        SELECT SUM(f.amount) FROM FinanancialTransaction f
+        SELECT SUM(f.amount) FROM FinancialTransaction f
         WHERE f.tenant.id = :tenantId
-        AND f.type = 'ENTRY'
+        AND f.type = com.example.appointment.models.enums.TransactionType.ENTRY
         AND f.transactionDate BETWEEN :start AND :end
         """)
     BigDecimal calculateTotalRevenue(UUID tenantId, LocalDateTime start, LocalDateTime end);
