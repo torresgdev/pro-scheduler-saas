@@ -8,10 +8,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,6 +38,19 @@ public class AppointmentController {
     public ResponseEntity<List<AppointmentResponseDTO>> listAllAppointments(@Valid @PathVariable UUID tenantId,
                                                                          @PathVariable UUID professionalId){
         var content = appointmentService.listAllAppointments(tenantId,professionalId);
+        return ResponseEntity.ok(content);
+    }
+
+    @GetMapping("/filter/{professionalId}")
+    @Operation(summary = "Lista horarios agendados do dia", description = "lista todos os horarios agendados do profissional apenas do dia")
+    public ResponseEntity<List<AppointmentResponseDTO>> listAllAppointmentsByProfessionalByTimeRange(@Valid @PathVariable UUID tenantId,
+                                                                                                     @PathVariable UUID professionalId,
+                                                                                                     @RequestParam(required = false)
+                                                                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
+
+        LocalDate targetDate = (date != null) ? date : LocalDate.now();
+
+        var content = appointmentService.listAllAppointmentsByDay(tenantId,professionalId, targetDate);
         return ResponseEntity.ok(content);
     }
 

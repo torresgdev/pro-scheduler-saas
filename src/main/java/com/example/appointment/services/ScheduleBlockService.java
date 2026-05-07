@@ -6,11 +6,10 @@ import com.example.appointment.exceptions.ExceptionConflict;
 import com.example.appointment.exceptions.NotFoundExceptionT;
 import com.example.appointment.models.Professional;
 import com.example.appointment.models.ScheduleBlock;
-import com.example.appointment.models.Tenant;
 import com.example.appointment.repositories.AppointmentRepository;
 import com.example.appointment.repositories.ProfessionalRepository;
 import com.example.appointment.repositories.ScheduleBlockRepository;
-import com.example.appointment.repositories.TenantRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,6 @@ public class ScheduleBlockService {
     private final ScheduleBlockRepository scheduleBlockRepository;
     private final ProfessionalRepository professionalRepository;
     private final AppointmentRepository appointmentRepository;
-    private final TenantRepository tenantRepository;
 
 
     public ScheduleBlockResponseDTO createBlock(UUID tenantId, UUID professionalId, ScheduleBlockRequestDTO requestDTO) {

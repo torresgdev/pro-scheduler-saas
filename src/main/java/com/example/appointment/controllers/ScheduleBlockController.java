@@ -42,7 +42,7 @@ public class ScheduleBlockController {
         return ResponseEntity.ok(scheduleBlockService.findAllByProfessional(tenantId, professionalId));
     }
 
-    @DeleteMapping("/{blockId}")
+    @DeleteMapping("/{scheduleBlockId}")
     @Operation(summary = "Deleta um bloqueio", description = "Deleta um bloqueio assim que preciso, passando o ID do bloqueio")
     public ResponseEntity<Void> blockDelete(@PathVariable UUID tenantId,
                                             @PathVariable UUID professionalId,

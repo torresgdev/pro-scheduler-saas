@@ -18,6 +18,7 @@ import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -86,6 +87,19 @@ public class AppointmentService {
 
         List<Appointment> list =  appointmentRepository.findAllByTenantIdAndProfessionalId(tenantId, professionalId);
         return list.stream().map(AppointmentResponseDTO::fromModel).toList();
+    }
+
+    public List<AppointmentResponseDTO> listAllAppointmentsByDay(UUID tenantId, UUID professionalId, LocalDate date) {
+        if (!professionalRepository.existsByTenantIdAndId(tenantId,professionalId)) {
+            throw new NotFoundExceptionT("Profissional não encontrado");
+        }
+
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = LocalDate.now().atTime(LocalTime.MAX);
+
+        List<Appointment> list = appointmentRepository.findAllByProfessionalAndDateRange(professionalId,startOfDay,endOfDay);
+        return list.stream().map(AppointmentResponseDTO::fromModel).toList();
+
     }
 
 

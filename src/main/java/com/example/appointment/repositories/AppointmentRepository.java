@@ -32,4 +32,19 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     List<Appointment> findAllByTenantIdAndProfessionalId(UUID tenantId, UUID id);
 
 
+    @Query("""
+            SELECT a FROM Appointment a
+            WHERE a.professional.id = :profId
+            AND a.startTime >= :start
+            AND a.startTIme <= :end
+            AND a.status != 'CANCELED'
+            ORDER BY a.startTime ASC
+            """)
+    List<Appointment> findAllByProfessionalAndDateRange(
+            @Param("profId") UUID profId,
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end
+    );
+
+
 }
