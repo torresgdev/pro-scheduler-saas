@@ -94,11 +94,14 @@ public class AppointmentService {
             throw new NotFoundExceptionT("Profissional não encontrado");
         }
 
-        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
-        LocalDateTime endOfDay = LocalDate.now().atTime(LocalTime.MAX);
+        LocalDateTime startOfDay = date.atStartOfDay();
+        LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
+
+        System.out.println("Buscando entre: " + startOfDay + " e " + endOfDay);
 
         List<Appointment> list = appointmentRepository.findAllByProfessionalAndDateRange(professionalId,startOfDay,endOfDay);
         return list.stream().map(AppointmentResponseDTO::fromModel).toList();
+
 
     }
 

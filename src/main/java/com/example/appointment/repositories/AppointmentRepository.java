@@ -36,7 +36,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
             SELECT a FROM Appointment a
             WHERE a.professional.id = :profId
             AND a.startTime >= :start
-            AND a.startTIme <= :end
+            AND a.startTime <= :end
             AND a.status != 'CANCELED'
             ORDER BY a.startTime ASC
             """)
