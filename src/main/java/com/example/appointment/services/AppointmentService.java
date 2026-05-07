@@ -112,8 +112,9 @@ public class AppointmentService {
 
 
         //verifica se já esta finalizado o agendamento
-        if (appointment.getStatus() == AppointmentStatus.COMPLETED) {
-            throw new IllegalStateException("Esse agendamento ja foi concluido");
+        if (appointment.getStatus() != AppointmentStatus.CONFIRMED &&
+                appointment.getStatus() != AppointmentStatus.PENDING_VERIFICATION) {
+            throw new ExceptionConflict("Status inválido para finalização");
         }
 
         //atualiza status

@@ -5,6 +5,7 @@ import com.example.appointment.models.enums.PaymentMethod;
 import com.example.appointment.models.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "financial_transactions")
 @Getter @Setter
+@NoArgsConstructor
 public class FinancialTransaction extends BaseEntity{
 
     @Column(nullable = false)
