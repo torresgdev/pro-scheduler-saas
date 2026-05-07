@@ -3,6 +3,7 @@ package com.example.appointment.controllers;
 
 import com.example.appointment.dtos.AppointmentRequestDTO;
 import com.example.appointment.dtos.AppointmentResponseDTO;
+import com.example.appointment.models.enums.PaymentMethod;
 import com.example.appointment.services.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -54,6 +55,14 @@ public class AppointmentController {
         return ResponseEntity.ok(content);
     }
 
+    @PatchMapping("/{appointmentId}/complete")
+    @Operation(summary = "Finaliza um agendamento", description = "Marca o status como COMPLETED e gera uma transação financeira")
+    public ResponseEntity<Void> completeAppointment(@PathVariable UUID tenantId,
+                                                    @PathVariable UUID appointmentId,
+                                                    @RequestParam PaymentMethod paymentMethod) {
+        appointmentService.completeAppointment(tenantId,appointmentId,paymentMethod);
+        return ResponseEntity.ok().build();
+    }
 
 
 

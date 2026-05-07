@@ -7,6 +7,7 @@ import com.example.appointment.exceptions.ExceptionConflict;
 import com.example.appointment.exceptions.NotFoundExceptionT;
 import com.example.appointment.models.*;
 import com.example.appointment.models.enums.AppointmentStatus;
+import com.example.appointment.models.enums.PaymentMethod;
 import com.example.appointment.models.enums.TransactionType;
 import com.example.appointment.repositories.*;
 import lombok.RequiredArgsConstructor;
@@ -103,7 +104,7 @@ public class AppointmentService {
     }
 
     @Transactional
-    public void completeAppointment(UUID tenantId, UUID appointmentId) {
+    public void completeAppointment(UUID tenantId, UUID appointmentId, PaymentMethod paymentMethod) {
 
         //busca agendamento
         Appointment appointment = appointmentRepository.findByTenantIdAndId(tenantId,appointmentId).orElseThrow(() ->
@@ -124,6 +125,7 @@ public class AppointmentService {
                 appointment.getOffering().getPrice(),
                 LocalDateTime.now(),
                 TransactionType.ENTRY,
+                paymentMethod,
                 "Serviço: " + appointment.getOffering().getName(),
                 appointment,
                 appointment.getTenant()

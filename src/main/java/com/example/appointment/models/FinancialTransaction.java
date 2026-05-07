@@ -1,6 +1,7 @@
 package com.example.appointment.models;
 
 
+import com.example.appointment.models.enums.PaymentMethod;
 import com.example.appointment.models.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -23,6 +24,9 @@ public class FinancialTransaction extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private TransactionType type;
 
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
+
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,10 +37,11 @@ public class FinancialTransaction extends BaseEntity{
     @JoinColumn(name = "tenant_id", nullable = false)
     private Tenant tenant;
 
-    public FinancialTransaction(BigDecimal amount, LocalDateTime transactionDate, TransactionType type, String description, Appointment appointment, Tenant tenant) {
+    public FinancialTransaction(BigDecimal amount, LocalDateTime transactionDate, TransactionType type, PaymentMethod paymentMethod,String description, Appointment appointment, Tenant tenant) {
         this.amount = amount;
         this.transactionDate = transactionDate;
         this.type = type;
+        this.paymentMethod = paymentMethod;
         this.description = description;
         this.appointment = appointment;
         this.tenant = tenant;
