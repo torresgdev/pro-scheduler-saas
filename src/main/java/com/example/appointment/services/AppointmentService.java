@@ -5,14 +5,10 @@ import com.example.appointment.dtos.AppointmentResponseDTO;
 import com.example.appointment.dtos.ClientRequestDTO;
 import com.example.appointment.exceptions.ExceptionConflict;
 import com.example.appointment.exceptions.NotFoundExceptionT;
-import com.example.appointment.models.Appointment;
-import com.example.appointment.models.Client;
-import com.example.appointment.models.Offering;
-import com.example.appointment.models.Professional;
-import com.example.appointment.repositories.AppointmentRepository;
-import com.example.appointment.repositories.OfferingRepository;
-import com.example.appointment.repositories.ProfessionalRepository;
-import com.example.appointment.repositories.ScheduleBlockRepository;
+import com.example.appointment.models.*;
+import com.example.appointment.models.enums.AppointmentStatus;
+import com.example.appointment.models.enums.TransactionType;
+import com.example.appointment.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
@@ -32,6 +28,7 @@ public class AppointmentService {
     private final ProfessionalRepository professionalRepository;
     private final OfferingRepository offeringRepository;
     private final ScheduleBlockRepository scheduleBlockRepository;
+    private final FinancialTransactionRepository financialTransactionRepository;
     private final ClientService clientService;
 
     @Transactional
@@ -101,6 +98,38 @@ public class AppointmentService {
 
         List<Appointment> list = appointmentRepository.findAllByProfessionalAndDateRange(professionalId,startOfDay,endOfDay);
         return list.stream().map(AppointmentResponseDTO::fromModel).toList();
+
+
+    }
+
+    @Transactional
+    public void completeAppointment(UUID tenantId, UUID appointmentId) {
+
+        //busca agendamento
+        Appointment appointment = appointmentRepository.findByTenantIdAndId(tenantId,appointmentId).orElseThrow(() ->
+                new NotFoundExceptionT("Agendamento não encontrado dentro desse Tenant(empresa)"));
+
+
+        //verifica se já esta finalizado o agendamento
+        if (appointment.getStatus() == AppointmentStatus.COMPLETED) {
+            throw new IllegalStateException("Esse agendamento ja foi concluido");
+        }
+
+        //atualiza status
+        appointment.setStatus(AppointmentStatus.COMPLETED);
+        appointmentRepository.save(appointment);
+
+
+        FinancialTransaction transaction = new FinancialTransaction(
+                appointment.getOffering().getPrice(),
+                LocalDateTime.now(),
+                TransactionType.ENTRY,
+                "Serviço: " + appointment.getOffering().getName(),
+                appointment,
+                appointment.getTenant()
+        );
+
+        financialTransactionRepository.save(transaction);
 
 
     }

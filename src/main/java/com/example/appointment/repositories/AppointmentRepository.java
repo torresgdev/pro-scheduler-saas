@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, UUID> {
@@ -30,6 +31,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     );
 
     List<Appointment> findAllByTenantIdAndProfessionalId(UUID tenantId, UUID id);
+
+    Optional<Appointment> findByTenantIdAndId(UUID tenantId, UUID appointmentId);
 
 
     @Query("""
