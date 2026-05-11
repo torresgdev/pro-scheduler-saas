@@ -137,6 +137,21 @@ public class AppointmentService {
 
     }
 
+    public List<AppointmentResponseDTO> getTodayQueue(UUID tenantId) {
+        LocalDateTime start = LocalDate.now().atStartOfDay();
+        LocalDateTime end = LocalDate.now().atTime(LocalTime.MAX);
+
+        List<Appointment> allAtendimentos = appointmentRepository.findAllByTenantAndDateRange(tenantId, start, end);
+
+        // LOG DE MENTOR: Isso vai cuspir no console do Java exatamente o que está vindo
+        System.out.println("DEBUG: Encontrados " + allAtendimentos.size() + " agendamentos hoje.");
+        allAtendimentos.forEach(a -> System.out.println("ID: " + a.getId() + " | Status: " + a.getStatus()));
+
+        return allAtendimentos.stream()
+                .map(AppointmentResponseDTO::fromModel)
+                .toList();
+    }
+
 
     private void validateWorkHours(Professional prof, LocalDateTime start, LocalDateTime end) {
         LocalTime appointmentStart = start.toLocalTime();

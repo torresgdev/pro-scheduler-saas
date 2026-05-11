@@ -15,7 +15,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     @Query("""
         SELECT COUNT(a) > 0 FROM Appointment a 
         WHERE a.professional.id = :profId 
-        AND a.status != 'CANCELLED'
+        AND a.status != 'CANCELED'
         AND (:start < a.endTime AND :end > a.startTime)
     """)
     boolean hasConflictAppointment(
@@ -45,6 +45,20 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
             """)
     List<Appointment> findAllByProfessionalAndDateRange(
             @Param("profId") UUID profId,
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end
+    );
+
+    @Query("""
+    SELECT a FROM Appointment a 
+    WHERE a.tenant.id = :tenantId 
+    AND a.startTime >= :start 
+    AND a.startTime <= :end 
+    AND a.status != 'CANCELED' 
+    ORDER BY a.startTime ASC
+    """)
+    List<Appointment> findAllByTenantAndDateRange(
+            @Param("tenantId") UUID tenantId,
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end
     );

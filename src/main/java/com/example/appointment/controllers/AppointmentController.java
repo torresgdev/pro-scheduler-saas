@@ -21,6 +21,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/tenants/{tenantId}/appointments")
+@CrossOrigin(origins = "http://localhost:5173")
 @Tag(name = "04. Gerenciamento de Marcação", description = "Gerencia um compromisso entre Cliente e profissional")
 public class AppointmentController {
 
@@ -62,6 +63,13 @@ public class AppointmentController {
                                                     @RequestParam PaymentMethod paymentMethod) {
         appointmentService.completeAppointment(tenantId,appointmentId,paymentMethod);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/today")
+    @Operation(summary = "Busca todos os agendamentos  do dia", description = "Busca todos agendamentos marcados para o dia em questão")
+    public ResponseEntity<List<AppointmentResponseDTO>> listAllAppointmentsByToday(@PathVariable UUID tenantId) {
+        var result = appointmentService.getTodayQueue(tenantId);
+        return ResponseEntity.ok().body(result);
     }
 
 
