@@ -2,6 +2,7 @@ package com.example.appointment.services;
 
 import com.example.appointment.dtos.FinancialTransactionResponseDTO;
 import com.example.appointment.models.FinancialTransaction;
+import com.example.appointment.models.enums.AppointmentStatus;
 import com.example.appointment.repositories.FinancialTransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,15 @@ public class FinancialService {
 
         BigDecimal total = financialTransactionRepository.calculateTotalRevenue(tenantId,start, end);
         return (total != null) ? total : BigDecimal.ZERO;
+    }
+
+    public List<FinancialTransactionResponseDTO> getHistoryByToday(UUID tenantId) {
+        LocalDate today = LocalDate.now();
+        LocalDateTime start = today.atStartOfDay();
+        LocalDateTime end = today.atTime(LocalTime.MAX);
+
+        return financialTransactionRepository.findDailyTransactions(tenantId, AppointmentStatus.COMPLETED,start,end).stream()
+                .map(FinancialTransactionResponseDTO::fromModel).toList();
+
     }
 }

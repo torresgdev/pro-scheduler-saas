@@ -27,4 +27,9 @@ public class FinancialController {
     public ResponseEntity<BigDecimal> getTodayRevenue(@PathVariable UUID tenantId) {
         return ResponseEntity.ok(financialService.getDailyReavenue(tenantId));
     }
+
+    @GetMapping("/today-history")
+    public ResponseEntity<List<FinancialTransactionResponseDTO>> getTodayHistory(@PathVariable UUID tenantId) {
+        return ResponseEntity.ok(financialService.getHistoryByToday(tenantId));
+    }
 }
